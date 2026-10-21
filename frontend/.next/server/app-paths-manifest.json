@@ -1,6 +1,9 @@
 {
-  "/analisis/page": "app/analisis/page.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js",
-  "/sampel/page": "app/sampel/page.js"
+  "/(app)/pengaturan/page": "app/(app)/pengaturan/page.js",
+  "/(app)/unggah/page": "app/(app)/unggah/page.js",
+  "/(app)/status/page": "app/(app)/status/page.js",
+  "/(app)/eksekusi/page": "app/(app)/eksekusi/page.js",
+  "/(app)/hasil/page": "app/(app)/hasil/page.js",
+  "/(app)/varian/page": "app/(app)/varian/page.js",
+  "/(app)/admin/page": "app/(app)/admin/page.js"
 }

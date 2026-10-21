@@ -1,4 +1,4 @@
-// File: /Users/cidar/IPB/PPL/Human GVC/frontend/app/layout.js
+// File: /Users/cidar/IPB/PPL/human-gvc-fullstack/frontend/app/layout.js
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

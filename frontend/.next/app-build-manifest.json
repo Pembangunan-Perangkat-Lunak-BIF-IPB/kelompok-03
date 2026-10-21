@@ -1,9 +1,14 @@
 {
   "pages": {
-    "/page": [
+    "/(app)/unggah/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/(app)/unggah/page.js"
+    ],
+    "/(app)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/layout.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -11,20 +16,35 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/sampel/page": [
+    "/(app)/pengaturan/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/sampel/page.js"
+      "static/chunks/app/(app)/pengaturan/page.js"
     ],
-    "/analisis/page": [
+    "/(app)/status/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/analisis/page.js"
+      "static/chunks/app/(app)/status/page.js"
     ],
-    "/login/page": [
+    "/(app)/eksekusi/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/login/page.js"
+      "static/chunks/app/(app)/eksekusi/page.js"
+    ],
+    "/(app)/hasil/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/hasil/page.js"
+    ],
+    "/(app)/varian/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/varian/page.js"
+    ],
+    "/(app)/admin/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(app)/admin/page.js"
     ]
   }
 }
