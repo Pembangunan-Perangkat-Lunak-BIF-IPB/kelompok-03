@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { NAV, PERAN_LABEL, sampelCode } from "../lib/constants";
 import { getUser, clearSession, getActive, setActive } from "../lib/session";
 import { svc } from "../lib/api";
-import { FlaskIcon, StatusBadge } from "./ui";
+import { Badge, FlaskIcon, StatusBadge } from "./ui";
 
 export default function AppShell({ children }) {
   const path = usePathname(), router = useRouter();
@@ -13,11 +13,15 @@ export default function AppShell({ children }) {
   const [active, setAct] = useState(null);
   const [list, setList] = useState([]);
   const [open, setOpen] = useState(false);
+  const [modePipeline, setModePipeline] = useState("simulasi");
 
   useEffect(() => { const u = getUser(); if (!u) router.replace("/login"); else setUser(u); }, [router]);
   useEffect(() => {
     const sync = () => setAct(getActive());
     sync(); window.addEventListener("gvc:active", sync); return () => window.removeEventListener("gvc:active", sync);
+  }, []);
+  useEffect(() => {
+    svc.health?.().then((h) => h?.mode_pipeline && setModePipeline(h.mode_pipeline)).catch(() => {});
   }, []);
   // Akses halaman admin hanya untuk administrator (UC-07; NFR keamanan)
   useEffect(() => { if (user && path.startsWith("/admin") && user.peran !== "administrator") router.replace("/unggah"); }, [user, path, router]);
@@ -47,7 +51,12 @@ export default function AppShell({ children }) {
       </aside>
       <div>
         <header className="top">
-          <h1>{cur?.title}</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: ".8rem" }}>
+            <h1>{cur?.title}</h1>
+            <Badge tone={modePipeline === "nyata" ? "green" : "amber"}>
+              {modePipeline === "nyata" ? "Mode: Nyata" : "Mode: Simulasi"}
+            </Badge>
+          </div>
           <div className="who">
             <div className="chip">
               <button onClick={toggle} aria-expanded={open}>{active ? `Analisis aktif #${active}` : "Belum ada analisis aktif"} ▾</button>

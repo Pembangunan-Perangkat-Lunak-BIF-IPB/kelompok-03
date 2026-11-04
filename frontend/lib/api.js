@@ -75,6 +75,7 @@ const real = {
   detailVarian: (id) => api(`/api/varian/${id}`),
   listPengguna: () => api("/api/pengguna"),
   simpanPengguna: (id, b) => (id ? api(`/api/pengguna/${id}`, { method: "PATCH", body: J(b) }) : api("/api/pengguna", { method: "POST", body: J(b) })),
+  health: () => api("/api/health"),
 };
 
 export const svc = USE_MOCK ? mock : real;

@@ -14,7 +14,7 @@ Dipakai `frontend/lib/api.js` saat `NEXT_PUBLIC_USE_MOCK=false`. Semua endpoint 
 | `POST /api/referensi` multipart (`nama_referensi,jenis,berkas`) | Status `unggahan`, `id_pengunggah` | UC-02/07 |
 | `DELETE /api/referensi/{id}` (admin) | 409 jika masih dipakai (FK RESTRICT) | UC-07 |
 | `GET /api/analisis` | Hanya milik pemanggil | FR-17, BR-07 |
-| `GET /api/analisis/{id}` → analisis + `sampel`, `referensi`, `anotasi` | 404 jika bukan milik | BR-07 |
+| `GET /api/analisis/{id}` → analisis + `sampel`, `referensi`, `anotasi`, `ringkasan` (`qc`, `alignment`) | 404 jika bukan milik | BR-07, FR-14, FR-15 |
 | `PATCH /api/analisis/{id}` `{id_referensi?,id_referensi_anotasi?,parameter?}` | 422 jika di luar rentang; tolak jika bukan `draf`/terkunci | UC-02, FR-06, BR-04/05 |
 | `POST /api/analisis/{id}/jalankan` | Cek BR-01 → `menunggu` → Job Manager | UC-03, FR-05 |
 | `GET /api/analisis/{id}/log` → `[log_proses]` | Dipolling 3 detik | UC-04, FR-07/08 |

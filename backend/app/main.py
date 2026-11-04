@@ -37,4 +37,10 @@ def health():
         db = "terhubung"
     except Exception as e:  # noqa: BLE001
         db = f"gagal: {e}"
-    return {"api": "ok", "database": db, "mode_pipeline": PIPELINE_MODE, "waktu": datetime.now().isoformat()}
+    return {
+        "api": "ok",
+        "database": db,
+        "mode_pipeline": PIPELINE_MODE,
+        "perangkat": pipeline.versi_perangkat(),
+        "waktu": datetime.now().isoformat(),
+    }

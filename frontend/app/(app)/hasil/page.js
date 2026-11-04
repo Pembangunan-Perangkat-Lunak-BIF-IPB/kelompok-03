@@ -34,6 +34,13 @@ export default function Hasil() {
   const dl = (f) => act(f, async () => saveBlob(await svc.unduh(a.id_analisis, f)), `Berkas ${f.toUpperCase()} diunduh.`);
   const total = rows?.total || 0, pages = Math.max(1, Math.ceil(total / SIZE));
 
+  let ringkasan = null;
+  try {
+    ringkasan = typeof a?.ringkasan === "string" ? JSON.parse(a.ringkasan) : (a?.ringkasan || null);
+  } catch {}
+  const qc = ringkasan?.qc;
+  const aln = ringkasan?.alignment;
+
   return (
     <>
       <Alert type={msg.t}>{msg.m}</Alert>
@@ -47,6 +54,31 @@ export default function Hasil() {
         <div className="stat"><small>TRANSISI / TRANSVERSI (TI/TV)</small><b>{sum ? sum.ti_tv ?? "-" : "…"}</b></div>
         <div className="stat"><small>KUALITAS RATA-RATA (QUAL)</small><b>{sum ? sum.qual_rata2 ?? "-" : "…"}</b></div>
       </div>
+      {(qc || aln) && (
+        <div className="grid2" style={{ marginBottom: "1rem" }}>
+          {qc && (
+            <Card>
+              <h3 style={{ fontSize: ".92rem", marginBottom: ".6rem", color: "#1e293b", fontWeight: 600 }}>Ringkasan QC & Trimming (FR-14)</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".4rem", fontSize: ".88rem" }}>
+                <div><span className="mut">Reads Awal:</span> <b>{qc.reads_sebelum?.toLocaleString("en-US") ?? "-"}</b></div>
+                <div><span className="mut">Reads Terpangkas:</span> <b>{qc.reads_sesudah?.toLocaleString("en-US") ?? "-"}</b></div>
+                <div><span className="mut">Q30 Sebelum:</span> <b>{qc.q30_sebelum ?? "-"}%</b></div>
+                <div><span className="mut">Q30 Sesudah:</span> <b>{qc.q30_sesudah ?? "-"}%</b></div>
+              </div>
+            </Card>
+          )}
+          {aln && (
+            <Card>
+              <h3 style={{ fontSize: ".92rem", marginBottom: ".6rem", color: "#1e293b", fontWeight: 600 }}>Ringkasan Alignment (FR-15)</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".4rem", fontSize: ".88rem" }}>
+                <div><span className="mut">Total Reads:</span> <b>{aln.total_reads?.toLocaleString("en-US") ?? "-"}</b></div>
+                <div><span className="mut">Reads Teralign:</span> <b>{aln.reads_teralign?.toLocaleString("en-US") ?? "-"}</b></div>
+                <div style={{ gridColumn: "span 2" }}><span className="mut">Persentase Teralign:</span> <b style={{ color: aln.persen_teralign >= 90 ? "#16a34a" : "#ca8a04" }}>{aln.persen_teralign ?? "-"}%</b></div>
+              </div>
+            </Card>
+          )}
+        </div>
+      )}
       <Card>
         <h2 style={{ border: 0, paddingBottom: 0 }}>Tabel Kandidat Varian</h2>
         <div className="tw"><table>

@@ -1,0 +1,6 @@
+{
+  "/(app)/pengaturan/page": "app/(app)/pengaturan/page.js",
+  "/(app)/eksekusi/page": "app/(app)/eksekusi/page.js",
+  "/(app)/status/page": "app/(app)/status/page.js",
+  "/(app)/unggah/page": "app/(app)/unggah/page.js"
+}
