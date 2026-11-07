@@ -100,12 +100,17 @@ def jalankan(ctx: Konteks, sh: Any) -> Optional[str]:
     sh.catat("Mempersiapkan basis data anotasi varian...", jenis="info")
     sh.progres(20)
 
-    # 1. Pastikan berkas anotasi memiliki indeks .tbi / .csi
-    tbi = Path(str(a) + ".tbi")
-    csi = Path(str(a) + ".csi")
-    if not tbi.exists() and not csi.exists():
-        sh.catat("Membuat indeks untuk berkas anotasi (bcftools index)...", jenis="info")
-        sh.run(["bcftools", "index", "-f", str(a)], nama="bcftools_index_anot")
+    # 1. Pastikan berkas anotasi memiliki indeks .tbi / .csi jika terkompresi
+    is_compressed = a.name.lower().endswith((".vcf.gz", ".bcf"))
+    if is_compressed:
+        tbi = Path(str(a) + ".tbi")
+        csi = Path(str(a) + ".csi")
+        if not tbi.exists() and not csi.exists():
+            try:
+                sh.catat("Membuat indeks untuk berkas anotasi (bcftools index)...", jenis="info")
+                sh.run(["bcftools", "index", "-f", str(a)], nama="bcftools_index_anot")
+            except TahapGagal as err:
+                sh.catat(f"Peringatan: Berkas anotasi tidak dapat diindeks ({err}). Mencoba membaca langsung...", jenis="info")
 
     sh.progres(40)
 

@@ -11,6 +11,7 @@ Login `peneliti@ipb.ac.id / Peneliti#123`. Reset data: DevTools > Application > 
 ## B. Frontend + backend sungguhan
 Terminal 1: ikuti `backend/README_BACKEND.md` (database lalu `uvicorn app.main:app --port 8000`).
 Terminal 2: `cd frontend`, `NEXT_PUBLIC_USE_MOCK=false`, `npm run dev`.
+*(Pengguna Windows: ikuti panduan lengkap langkah demi langkah di `docs/PANDUAN_WINDOWS_WSL.md` menggunakan WSL2).*
 
 ## C. Skenario uji manual
 1. Login salah → pesan error; login benar → Unggah Data.

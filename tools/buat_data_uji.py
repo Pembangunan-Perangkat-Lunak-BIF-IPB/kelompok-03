@@ -146,11 +146,26 @@ def buat_anotasi_uji(path_anotasi_chr: Path, path_anotasi_nochr: Path, variants:
         lines_chr.append(f"{kontig}\t{v['pos']}\t{rs_id}\t{v['ref']}\t{v['alt']}\t100\tPASS\tGENE={gene_name}")
         lines_nochr.append(f"{kontig_nochr}\t{v['pos']}\t{rs_id}\t{v['ref']}\t{v['alt']}\t100\tPASS\tGENE={gene_name}")
 
-    with gzip.open(path_anotasi_chr, "wt", encoding="utf-8") as f:
-        f.write("\n".join(lines_chr) + "\n")
+    raw_chr = path_anotasi_chr.with_suffix("") if path_anotasi_chr.suffix == ".gz" else path_anotasi_chr
+    raw_nochr = path_anotasi_nochr.with_suffix("") if path_anotasi_nochr.suffix == ".gz" else path_anotasi_nochr
 
-    with gzip.open(path_anotasi_nochr, "wt", encoding="utf-8") as f:
-        f.write("\n".join(lines_nochr) + "\n")
+    raw_chr.write_text("\n".join(lines_chr) + "\n", encoding="utf-8")
+    raw_nochr.write_text("\n".join(lines_nochr) + "\n", encoding="utf-8")
+
+    # Kompres dengan bgzip / bcftools jika tersedia agar format blok gzip valid
+    if shutil.which("bcftools"):
+        subprocess.run(["bcftools", "view", "-Oz", "-o", str(path_anotasi_chr), str(raw_chr)], check=False)
+        subprocess.run(["bcftools", "index", "-f", str(path_anotasi_chr)], check=False)
+        subprocess.run(["bcftools", "view", "-Oz", "-o", str(path_anotasi_nochr), str(raw_nochr)], check=False)
+        subprocess.run(["bcftools", "index", "-f", str(path_anotasi_nochr)], check=False)
+    elif shutil.which("bgzip"):
+        subprocess.run(["bgzip", "-c", str(raw_chr)], stdout=open(path_anotasi_chr, "wb"), check=False)
+        subprocess.run(["bgzip", "-c", str(raw_nochr)], stdout=open(path_anotasi_nochr, "wb"), check=False)
+    else:
+        with gzip.open(path_anotasi_chr, "wt", encoding="utf-8") as f:
+            f.write("\n".join(lines_chr) + "\n")
+        with gzip.open(path_anotasi_nochr, "wt", encoding="utf-8") as f:
+            f.write("\n".join(lines_nochr) + "\n")
 
 
 def main():
