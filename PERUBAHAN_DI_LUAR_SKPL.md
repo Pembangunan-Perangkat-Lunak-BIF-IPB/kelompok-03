@@ -7,7 +7,6 @@ Disusun dari seluruh pekerjaan implementasi. Setiap butir yang tidak tertulis di
 |---|---|---|---|
 | 1 | **Kolom baru** `pengguna.email_terverifikasi` | `BOOLEAN NOT NULL DEFAULT FALSE`. Akun yang sudah ada otomatis `TRUE` saat migrasi | Login ditolak jika `FALSE`. Akun buatan admin langsung `TRUE` |
 | 2 | **Tabel baru** `token_email` | `id_token`, `id_pengguna` (FK → pengguna, `ON DELETE CASCADE`), `jenis` (`verifikasi` / `reset_sandi`), `token_hash` (SHA-256, UNIQUE), `kedaluwarsa`, `dipakai_pada`, `dibuat_pada`; indeks `(id_pengguna, jenis)` | Menyimpan hanya hash token. Satu pengguna dapat memiliki banyak token |
-| 3 | **Kolom baru** `analisis.ringkasan` (migrasi 04) | `JSONB DEFAULT NULL` pada tabel `analisis` | Menyimpan ringkasan metrik kontrol kualitas (FR-14: fastp) dan perataan sekuens (FR-15: samtools flagstat) per analisis |
 
 Tidak ada perubahan pada tabel, kolom, atau constraint yang sudah ada (termasuk `log_akses`, yang tetap `ON DELETE RESTRICT`). Pencatatan jejak akses untuk verifikasi dan reset kata sandi memakai nilai yang sudah ada (`jenis_objek='akun'`, `jenis_aksi='ubah'`). **ERD/skema Minggu 6 perlu diperbarui** dengan butir 1 dan 2.
 
@@ -44,4 +43,4 @@ SKPL hanya memuat UC-07 (administrator mengelola akun, FR-21 berprioritas *Could
 - Setelah kata sandi di-reset, sesi login lama tetap berlaku hingga kedaluwarsa (12 jam).
 - Pesan "email sudah terdaftar" pada pendaftaran memungkinkan orang menebak email terdaftar. Dipilih demi kemudahan pengguna; dapat diganti pesan generik.
 - Pembatas percobaan disimpan di memori server (hilang saat restart).
-- Belum ada enkripsi data genomik at-rest, serta FR-20 dan halaman riwayat akses (FR-14 dan FR-15 telah terpenuhi pada Minggu 9).
+- Belum ada enkripsi data genomik at-rest, serta FR-15, FR-20, dan halaman riwayat akses.

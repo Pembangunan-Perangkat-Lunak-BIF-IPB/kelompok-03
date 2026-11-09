@@ -73,9 +73,9 @@ def jalankan(id_a: int, u=Depends(pengguna_saat_ini)):
         if kurang:
             raise HTTPException(422, "Analisis belum dapat dijalankan. Belum lengkap: " + ", ".join(kurang) + ".")
         if PIPELINE_MODE == "nyata":
-            kendala = pipeline.preflight_pipeline(a, STORAGE_DIR)
-            if kendala:
-                raise HTTPException(422, "Preflight pipeline nyata gagal: " + "; ".join(kendala))
+            for r in (a["referensi"], a["anotasi"]):
+                if r and not (STORAGE_DIR / r["lokasi_berkas"]).exists():
+                    raise HTTPException(422, f"Berkas referensi '{r['nama_referensi']}' belum tersedia di server.")
         c.execute("UPDATE analisis SET status='menunggu', progres_persen=0, tahap_saat_ini=NULL WHERE id_analisis=%s", (id_a,))
         c.execute("INSERT INTO log_proses (id_analisis,tahap,jenis_pesan,pesan) VALUES (%s,NULL,'info','Analisis masuk antrean.')", (id_a,))
         catat(c, u["id_pengguna"], "analisis", id_a, "jalankan")

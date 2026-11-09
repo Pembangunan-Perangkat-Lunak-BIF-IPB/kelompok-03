@@ -47,9 +47,9 @@ Catatan: Gmail membatasi jumlah email per hari untuk akun biasa; untuk produksi 
 ## Mode pipeline
 - `simulasi` (default): tiap tahap menunggu `SIM_DETIK_PER_TAHAP` detik lalu membangkitkan varian acak yang tetap mematuhi parameter (min depth, min QUAL). Nama sampel berisi "gagal" memicu kegagalan di Alignment.
 - `nyata`: `fastp` (QC+trimming) → `bwa mem` → `samtools sort/index` → `bcftools mpileup|call` → `bcftools view` (filter) → `bcftools annotate`.
-  Pasang: `conda env create -f ../environment.yml && conda activate human-gvc`.
-  Panduan Windows: ikuti `docs/PANDUAN_WINDOWS_WSL.md` (menggunakan WSL2 Ubuntu).
-  Uji coba cepat: gunakan data uji mini di `data_uji/` (dibuat via `python3 tools/buat_data_uji.py`) agar selesai dalam 5 detik. Jangan gunakan genom penuh GRCh38 3.1 GB di laptop untuk demo (lihat `docs/DATA_UJI.md`).
+  Pasang: `conda install -c bioconda -c conda-forge fastp bwa samtools bcftools` (Windows: WSL).
+  Letakkan `GRCh38.fasta` dan `dbSNP_v155.vcf.gz` di `storage/references/` (sesuai `referensi.lokasi_berkas`). Anotasi GTF/GFF dilewati (hanya VCF).
+  **Mode nyata belum dijalankan terhadap data sekuens sungguhan** (hanya parser VCF yang diuji). Coba dengan FASTQ kecil dulu.
 
 ## Tes otomatis
 ```bash

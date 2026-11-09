@@ -49,24 +49,8 @@ function load() {
       { id_sampel: 2, id_pengguna: 3, nama_sampel: "SAMP-B", lokasi: "Jember, Jawa Timur", strain: "-", karakteristik: "Darah normal", tipe_baca: "single-end", lokasi_fastq_r1: "s3://x/b.fastq.gz", lokasi_fastq_r2: null, dibuat_pada: iso(t) },
     ],
     analisis: [
-      {
-        id_analisis: 1, id_pengguna: 3, id_sampel: 1, id_referensi: 1, id_referensi_anotasi: 2,
-        tanggal: iso(t), status: "selesai", parameter: PARAM_DEFAULT, tahap_saat_ini: "anotasi",
-        progres_persen: 100, log_kesalahan: null, keterangan: null, terkunci: true, dipublikasikan: true, mulai_ms: t, ok: true,
-        ringkasan: {
-          qc: { reads_sebelum: 120000, reads_sesudah: 118400, q30_sebelum: 94.2, q30_sesudah: 98.1 },
-          alignment: { total_reads: 118400, reads_teralign: 115900, persen_teralign: 97.88 }
-        }
-      },
-      {
-        id_analisis: 2, id_pengguna: 3, id_sampel: 2, id_referensi: 1, id_referensi_anotasi: 2,
-        tanggal: iso(t), status: "selesai", parameter: PARAM_DEFAULT, tahap_saat_ini: "anotasi",
-        progres_persen: 100, log_kesalahan: null, keterangan: null, terkunci: true, dipublikasikan: true, mulai_ms: t, ok: true,
-        ringkasan: {
-          qc: { reads_sebelum: 80000, reads_sesudah: 78900, q30_sebelum: 93.5, q30_sesudah: 97.6 },
-          alignment: { total_reads: 78900, reads_teralign: 76800, persen_teralign: 97.34 }
-        }
-      },
+      { id_analisis: 1, id_pengguna: 3, id_sampel: 1, id_referensi: 1, id_referensi_anotasi: 2, tanggal: iso(t), status: "selesai", parameter: PARAM_DEFAULT, tahap_saat_ini: "anotasi", progres_persen: 100, log_kesalahan: null, keterangan: null, terkunci: true, dipublikasikan: true, mulai_ms: t, ok: true },
+      { id_analisis: 2, id_pengguna: 3, id_sampel: 2, id_referensi: 1, id_referensi_anotasi: 2, tanggal: iso(t), status: "selesai", parameter: PARAM_DEFAULT, tahap_saat_ini: "anotasi", progres_persen: 100, log_kesalahan: null, keterangan: null, terkunci: true, dipublikasikan: true, mulai_ms: t, ok: true },
     ],
     varian: [...seedVarian(1, 1, 12, 7), ...seedVarian(2, 2, 12, 11)],
     log: [],
@@ -255,6 +239,5 @@ export const mock = {
     else db.pengguna.push({ id_pengguna: ++db.seq.pengguna, nama: b.nama, email: b.email, password: b.password, peran: b.peran, aktif: true, email_terverifikasi: true, dibuat_pada: iso() });
     save(db);
   },
-  async health() { return { api: "ok", mode_pipeline: "simulasi" }; },
   reset() { localStorage.removeItem(KEY); },
 };
