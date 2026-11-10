@@ -97,3 +97,126 @@ td { padding: .85rem 1rem; border-top: 1px solid #f1f5f9; } tr.click { cursor: p
 .login .alt { margin-top: 1rem; text-align: center; font-size: .9rem; display: grid; gap: .4rem; }
 .login .card h1 { margin: 0 0 .3rem; font-size: 1.3rem; } .login .card p.sub { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
 .linkbtn { background: none; border: 0; color: var(--blue); padding: 0; font-weight: 600; text-decoration: underline; }
+/* Split-screen layout for login page */
+.login-page {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: 100vh;
+}
+/* Info panel (left side) */
+.info-panel {
+  background: linear-gradient(180deg, #1E6BFF, #2F80FF);
+  color: #fff;
+  padding: 2rem 3rem;
+  overflow-y: auto;
+}
+.info-panel .badge {
+  background: #FBBF24;
+  color: #000;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.info-head {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+}
+.info-subhead {
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+}
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+.pipeline-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.pipeline-steps .step {
+  background: rgba(255,255,255,0.15);
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.feature-card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-item {
+  background: rgba(255,255,255,0.1);
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  text-align: center;
+}
+.stat-item strong {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.info-footer {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 2rem;
+  text-align: center;
+}
+/* Login card (right side) */
+.login-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  padding: 2rem;
+}
+.login-card .card {
+  width: 100%;
+  max-width: 26rem;
+  padding: 2rem;
+  margin: 0;
+}
+/* Responsive */
+@media (max-width: 1024px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+  .info-panel {
+    order: 2;
+  }
+  .login-card {
+    order: 1;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
