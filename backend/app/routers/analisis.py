@@ -73,9 +73,22 @@ def jalankan(id_a: int, u=Depends(pengguna_saat_ini)):
         if kurang:
             raise HTTPException(422, "Analisis belum dapat dijalankan. Belum lengkap: " + ", ".join(kurang) + ".")
         if PIPELINE_MODE == "nyata":
+            import shutil
+            # Preflight perangkat bioinformatika (WP-1 / Rakazaki)
+            perangkat_dibutuhkan = ["fastp", "samtools", "bcftools"]
+            if not (shutil.which("bwa-mem2") or shutil.which("bwa")):
+                raise HTTPException(422, "Perangkat aligner ('bwa-mem2' atau 'bwa') tidak terpasang di server.")
+            for tool in perangkat_dibutuhkan:
+                if not shutil.which(tool):
+                    raise HTTPException(422, f"Perangkat bioinformatika '{tool}' tidak ditemukan di server.")
+
             for r in (a["referensi"], a["anotasi"]):
                 if r and not (STORAGE_DIR / r["lokasi_berkas"]).exists():
                     raise HTTPException(422, f"Berkas referensi '{r['nama_referensi']}' belum tersedia di server.")
+            if a["referensi"]:
+                nama_ref = a["referensi"]["nama_referensi"].lower()
+                if nama_ref.endswith((".gz", ".bgz")):
+                    raise HTTPException(422, f"Berkas referensi genom '{a['referensi']['nama_referensi']}' terkompresi (.gz). Gunakan format FASTA tidak terkompresi.")
         c.execute("UPDATE analisis SET status='menunggu', progres_persen=0, tahap_saat_ini=NULL WHERE id_analisis=%s", (id_a,))
         c.execute("INSERT INTO log_proses (id_analisis,tahap,jenis_pesan,pesan) VALUES (%s,NULL,'info','Analisis masuk antrean.')", (id_a,))
         catat(c, u["id_pengguna"], "analisis", id_a, "jalankan")

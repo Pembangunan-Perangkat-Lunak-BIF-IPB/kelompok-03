@@ -5,6 +5,8 @@ os.environ["SIM_DETIK_PER_TAHAP"] = "0.1"
 os.environ["PIPELINE_MODE"] = "simulasi"
 os.environ["RATE_LIMIT_MAKS"] = "1000"
 os.environ["RATE_LIMIT_LOGIN_MAKS"] = "1000"
+os.environ["SMTP_HOST"] = ""
+os.environ["SMTP_USER"] = ""
 import pytest
 from fastapi.testclient import TestClient
 

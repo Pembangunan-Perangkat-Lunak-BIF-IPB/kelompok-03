@@ -10,7 +10,8 @@ import tempfile
 from pathlib import Path
 import pytest
 
-from app.pipeline._konteks_stub import Konteks, Runner, TahapGagal
+from app.pipeline.konteks import Konteks, TahapGagal
+from app.pipeline.runner import Runner
 from app.pipeline.stages import qc_trimming, alignment, bam_processing
 
 
@@ -82,7 +83,7 @@ def test_wp2_pipeline_rantai_tahap(mini_workdir, mini_dataset):
     )
 
     # 1. Tahap QC & Trimming
-    sh_qc = Runner(ctx.id_analisis, "qc_trimming", cetak_log=False)
+    sh_qc = Runner(ctx.id_analisis, "qc_trimming", ke_db=False)
     qc_trimming.jalankan(ctx, sh_qc)
 
     assert "reads_r1" in ctx.berkas
@@ -94,7 +95,7 @@ def test_wp2_pipeline_rantai_tahap(mini_workdir, mini_dataset):
     assert ctx.ringkasan["qc"]["reads_sebelum"] >= 2
 
     # 2. Tahap Alignment
-    sh_aln = Runner(ctx.id_analisis, "alignment", cetak_log=False)
+    sh_aln = Runner(ctx.id_analisis, "alignment", ke_db=False)
     alignment.jalankan(ctx, sh_aln)
 
     assert "bam_mentah" in ctx.berkas
@@ -102,7 +103,7 @@ def test_wp2_pipeline_rantai_tahap(mini_workdir, mini_dataset):
     assert ctx.berkas["bam_mentah"].stat().st_size > 0
 
     # 3. Tahap BAM Processing
-    sh_bam = Runner(ctx.id_analisis, "bam_processing", cetak_log=False)
+    sh_bam = Runner(ctx.id_analisis, "bam_processing", ke_db=False)
     bam_processing.jalankan(ctx, sh_bam)
 
     assert "bam" in ctx.berkas
@@ -138,7 +139,7 @@ def test_wp2_qc_single_end(mini_workdir, mini_dataset):
         threads=1,
     )
 
-    sh_qc = Runner(ctx.id_analisis, "qc_trimming", cetak_log=False)
+    sh_qc = Runner(ctx.id_analisis, "qc_trimming", ke_db=False)
     qc_trimming.jalankan(ctx, sh_qc)
 
     assert "reads_r1" in ctx.berkas

@@ -18,7 +18,8 @@ MAX_REFERENSI_MB = int(os.getenv("MAX_REFERENSI_MB", "4096"))
 PIPELINE_MODE = os.getenv("PIPELINE_MODE", "simulasi")
 SIM_DETIK_PER_TAHAP = float(os.getenv("SIM_DETIK_PER_TAHAP", "4"))
 PIPELINE_THREADS = int(os.getenv("PIPELINE_THREADS", "4"))
-PIPELINE_WORKERS = int(os.getenv("PIPELINE_WORKERS", "2"))             # analisis yang boleh berjalan bersamaan
+# Analisis bersamaan: default 1 untuk mode nyata agar aman di RAM laptop (WP-1 / Rakazaki)
+PIPELINE_WORKERS = int(os.getenv("PIPELINE_WORKERS", "1" if PIPELINE_MODE == "nyata" else "2"))
 
 # BR-04. SKPL tidak menyebut angka rentang: samakan dengan frontend/lib/constants.js
 PARAM_RANGE = {

@@ -29,6 +29,49 @@ for r in (auth, sampel, referensi, analisis, varian, pengguna):
     app.include_router(r.router)
 
 
+import shutil
+import subprocess
+
+def _versi_perangkat() -> dict:
+    hasil = {}
+    # fastp
+    try:
+        r = subprocess.run(["fastp", "--version"], capture_output=True, text=True, check=False)
+        hasil["fastp"] = r.stderr.strip() or r.stdout.strip()
+    except Exception:
+        hasil["fastp"] = "tidak terpasang"
+
+    # bwa-mem2 / bwa
+    aligner = "bwa-mem2" if shutil.which("bwa-mem2") else ("bwa" if shutil.which("bwa") else None)
+    if aligner:
+        try:
+            cmd = [aligner, "version"] if aligner == "bwa-mem2" else [aligner]
+            r = subprocess.run(cmd, capture_output=True, text=True, check=False)
+            output = (r.stdout or r.stderr or "").strip().splitlines()
+            baris = output[0] if output else "tersedia"
+            hasil["aligner"] = f"{aligner} ({baris})"
+        except Exception:
+            hasil["aligner"] = aligner
+    else:
+        hasil["aligner"] = "tidak terpasang"
+
+    # samtools
+    try:
+        r = subprocess.run(["samtools", "--version"], capture_output=True, text=True, check=False)
+        hasil["samtools"] = r.stdout.splitlines()[0] if r.stdout else "tersedia"
+    except Exception:
+        hasil["samtools"] = "tidak terpasang"
+
+    # bcftools
+    try:
+        r = subprocess.run(["bcftools", "--version"], capture_output=True, text=True, check=False)
+        hasil["bcftools"] = r.stdout.splitlines()[0] if r.stdout else "tersedia"
+    except Exception:
+        hasil["bcftools"] = "tidak terpasang"
+
+    return hasil
+
+
 @app.get("/api/health")
 def health():
     try:
@@ -37,4 +80,10 @@ def health():
         db = "terhubung"
     except Exception as e:  # noqa: BLE001
         db = f"gagal: {e}"
-    return {"api": "ok", "database": db, "mode_pipeline": PIPELINE_MODE, "waktu": datetime.now().isoformat()}
+    return {
+        "api": "ok",
+        "database": db,
+        "mode_pipeline": PIPELINE_MODE,
+        "perangkat_bioinformatika": _versi_perangkat(),
+        "waktu": datetime.now().isoformat(),
+    }

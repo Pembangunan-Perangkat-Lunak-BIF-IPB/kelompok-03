@@ -33,7 +33,8 @@ def unggah_sampel(nama_sampel: str = Form(""), lokasi: str = Form(""), strain: s
     try:
         paths = []
         for n, f in enumerate(files, 1):
-            p = folder / f"R{n}_{re.sub(r'[^\w.\-]', '_', f.filename)}"
+            nama_bersih = re.sub(r'[^\w.\-]', '_', f.filename)
+            p = folder / f"R{n}_{nama_bersih}"
             if simpan_stream(f, p, MAX_UPLOAD_MB) == 0:
                 raise HTTPException(422, f"Berkas {f.filename} kosong.")
             periksa_isi_fastq(p, f.filename)
