@@ -7,6 +7,7 @@ import { useAnalisis } from "../../../lib/hooks";
 import { setActive } from "../../../lib/session";
 import { Alert, Badge, Card, StatusBadge } from "../../../components/ui";
 import NoActive from "../../../components/NoActive";
+import Distribusi from "../../../components/Distribusi";
 
 const SIZE = 10;
 export default function Hasil() {
@@ -47,6 +48,7 @@ export default function Hasil() {
         <div className="stat"><small>TRANSISI / TRANSVERSI (TI/TV)</small><b>{sum ? sum.ti_tv ?? "-" : "…"}</b></div>
         <div className="stat"><small>KUALITAS RATA-RATA (QUAL)</small><b>{sum ? sum.qual_rata2 ?? "-" : "…"}</b></div>
       </div>
+      <Distribusi idAnalisis={a.id_analisis} />
       <Card>
         <h2 style={{ border: 0, paddingBottom: 0 }}>Tabel Kandidat Varian</h2>
         <div className="tw"><table>

@@ -1,6 +1,7 @@
 """Human GVC API (UI/API + Job Manager pada Desain Modular). Jalankan: uvicorn app.main:app --reload --port 8000"""
 from contextlib import asynccontextmanager
 from datetime import datetime
+import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import pipeline
 from .config import FRONTEND_ORIGIN, PIPELINE_MODE
 from .db import get_conn
-from .routers import analisis, auth, pengguna, referensi, sampel, varian
+from .routers import analisis, auth, distribusi, log, pengguna, referensi, sampel, varian
 
 
 @asynccontextmanager
@@ -25,7 +26,7 @@ async def lifespan(app):
 app = FastAPI(title="Human GVC API", version="1.0.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=list({FRONTEND_ORIGIN, "http://localhost:3000", "http://127.0.0.1:3000"}),
                    allow_methods=["*"], allow_headers=["*"], expose_headers=["Content-Disposition"])
-for r in (auth, sampel, referensi, analisis, varian, pengguna):
+for r in (auth, sampel, referensi, analisis, log, distribusi, varian, pengguna):
     app.include_router(r.router)
 
 
@@ -78,8 +79,11 @@ def health():
         with get_conn() as c:
             c.execute("SELECT 1")
         db = "terhubung"
-    except Exception as e:  # noqa: BLE001
-        db = f"gagal: {e}"
+    
+    except Exception:  # noqa: BLE001
+        logging.getLogger("uvicorn.error").exception("Health check: koneksi database gagal")
+        db = "gagal"
+    
     return {
         "api": "ok",
         "database": db,

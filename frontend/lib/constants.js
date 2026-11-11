@@ -42,6 +42,7 @@ export const NAV = [
   { href: "/hasil", label: "5. Hasil Analisis", title: "Hasil Analisis" },
   { href: "/varian", label: "6. Database Varian", title: "Database Varian" },
   { href: "/admin", label: "7. Kelola Sistem (Admin)", title: "Kelola Sistem (Admin)", admin: true },
+  { href: "/log", label: "8. Log Aktivitas (Admin)", title: "Log Aktivitas (Admin)", admin: true },
 ];
 
 // Kode sampel tampilan (desain: SAMP-2026-001) diturunkan dari id_sampel + tahun dibuat.

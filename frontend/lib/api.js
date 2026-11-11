@@ -3,7 +3,7 @@
 import { getToken } from "./session";
 import { mock } from "./mock";
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 export const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true";
 
 const msg = (body, status) => {
@@ -45,6 +45,7 @@ async function download(path, filename) {
 }
 
 const real = {
+  distribusi: (id) => api(`/api/analisis/${id}/distribusi`),
   login: (email, password) => api("/api/auth/login", { method: "POST", body: J({ email, password }) }),
   daftar: (nama, email, password) => api("/api/auth/daftar", { method: "POST", body: J({ nama, email, password }) }),
   verifikasi: (token) => api("/api/auth/verifikasi", { method: "POST", body: J({ token }) }),
@@ -75,6 +76,8 @@ const real = {
   detailVarian: (id) => api(`/api/varian/${id}`),
   listPengguna: () => api("/api/pengguna"),
   simpanPengguna: (id, b) => (id ? api(`/api/pengguna/${id}`, { method: "PATCH", body: J(b) }) : api("/api/pengguna", { method: "POST", body: J(b) })),
+  listLog: (p) => api(`/api/log?${qs(p)}`),
+  unduhLog: (p) => download(`/api/log/unduh?${qs(p)}`, "log-aktivitas.csv"),
 };
 
 export const svc = USE_MOCK ? mock : real;

@@ -6,7 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/human_gvc")
-SECRET_KEY = os.getenv("SECRET_KEY", "ganti-dengan-string-acak-panjang")
+SECRET_KEY = os.getenv("SECRET_KEY", "")
+# Keamanan (NFR-1/2): tolak kunci kosong, bawaan, atau terlalu pendek agar token tidak bisa dipalsukan.
+if len(SECRET_KEY) < 32 or SECRET_KEY == "ganti-dengan-string-acak-panjang":
+    raise RuntimeError("SECRET_KEY di backend/.env wajib diisi string acak minimal 32 karakter. "
+                       "Buat dengan: python -c \"import secrets; print(secrets.token_urlsafe(48))\"")
 TOKEN_JAM = int(os.getenv("TOKEN_JAM", "12"))
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")
 STORAGE_DIR = Path(os.getenv("STORAGE_DIR", "./storage")).resolve()   # Storage berkas besar (Desain Modular, komponen Storage)
