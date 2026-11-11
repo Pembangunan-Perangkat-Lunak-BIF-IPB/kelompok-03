@@ -1,0 +1,23 @@
+name: human-gvc
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  # Bioinformatika pipeline (WP-2, WP-3)
+  - fastp=1.4.0
+  - bwa-mem2=2.2.1      # osx-arm64 didukung native (bioconda osx-arm64)
+  - samtools=1.25
+  - bcftools=1.25
+  - wgsim               # simulator reads untuk data uji (WP-5)
+  # Python backend
+  - pip
+  - pip:
+      - fastapi
+      - uvicorn[standard]
+      - psycopg[binary]
+      - python-dotenv
+      - python-jose[cryptography]
+      - passlib[bcrypt]
+      - python-multipart
