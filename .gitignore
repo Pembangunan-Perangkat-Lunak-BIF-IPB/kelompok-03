@@ -1,9 +1,23 @@
-node_modules/
+# Rahasia: jangan pernah di-commit
 .env
+.env.*
+!.env.example
+!.env.local.example
+
+# Dependensi dan hasil build
+node_modules/
+.next/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Data besar, hasil analisis, dan log server
+storage/
+logs/
 *.fastq
 *.fastq.gz
 *.bam
 *.vcf
-__pycache__/
-*.pyc
+
 .DS_Store
